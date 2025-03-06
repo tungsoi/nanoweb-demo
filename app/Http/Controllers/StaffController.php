@@ -8,7 +8,13 @@ use Illuminate\Http\Request;
 class StaffController extends Controller
 {
     public function index() {
-        $staffs = Staff::paginate(5);
+        if (isset($_GET['filter'])) {
+            $filter = $_GET['filter'];
+            $staffs = Staff::where('name', 'LIKE', '%' . $filter . '%')->paginate(5);
+        } else {
+            $staffs = Staff::paginate(5);
+        }
+
         return view('staff.index', compact('staffs'));
     }
 
